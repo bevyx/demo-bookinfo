@@ -1,0 +1,15 @@
+version: '1.0'
+steps:
+  pull:
+    image: codefresh/fs-ops
+    commands:
+      - curl -O -L https://raw.githubusercontent.com/bevyx/${EVENT_NAME}/${EVENT_TAG}/kube.yaml
+  preprocess:
+    image: alpine
+    commands:
+      - sed 's/${version}/'"${EVENT_TAG}"'/' kube.yaml > ./kube-deploy.yaml
+  deploy:
+    image: codefresh/kubectl:1.10.0
+    commands:
+      - kubectl config use-context ${CLUSTER_NAME}
+      - kubectl apply -f ./kube-deploy.yaml
