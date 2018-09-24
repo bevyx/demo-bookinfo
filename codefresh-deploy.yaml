@@ -8,6 +8,7 @@ steps:
     image: alpine
     commands:
       - sed 's/${version}/'"${EVENT_TAG}"'/' kube.yaml > ./kube-deploy.yaml
+      - sed 's/${namespace}/'"${namespace}"'/' kube-deploy.yaml > ./kube-deploy.yaml
   deploy:
     image: codefresh/kubectl:1.10.0
     commands:
